@@ -8,4 +8,5 @@ lp.type='lowpass';lp.frequency.setValueAtTime(f*8,t);lp.frequency.exponentialRam
 g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.6,t+0.005);g.gain.exponentialRampToValueAtTime(0.25,t+0.3);g.gain.exponentialRampToValueAtTime(0.001,t+2.2);
 [[1,'triangle',1],[2,'sine',0.35],[3,'sine',0.15],[1.003,'sawtooth',0.05]].forEach(([h,type,a])=>{const o=ctx.createOscillator(),og=ctx.createGain();o.type=type;o.frequency.value=f*h;og.gain.value=a;o.connect(og);og.connect(lp);o.start(t);o.stop(t+2.3);});
 lp.connect(g);g.connect(master);}
-return {init,play,freq};})();
+return {init,play,freq,ctx:()=>ctx};})();
+Audio_.tick=(accent)=>{try{const c=Audio_.ctx();if(!c)return;const t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=accent?1500:1000;g.gain.setValueAtTime(accent?0.12:0.07,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.05);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+0.06);}catch(e){}};
